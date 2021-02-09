@@ -8,8 +8,15 @@ class UtilsHelper {
   ///maxLines：文本支持最大多少行
   ///AUTO：华为手机如果不指定locale的时候，该方法算出来的文字高度是比系统计算偏小的。
   static double calculateTextHeight(
-      BuildContext context, String value, TextStyle style, double maxWidth,
-      {int maxLines}) {
+      {@required BuildContext context,
+      @required String value,
+      @required TextStyle style,
+      @required double maxWidth,
+      int maxLines}) {
+    assert(context != null);
+    assert(value != null && value.length != 0);
+    assert(maxWidth != null);
+
     TextPainter painter = TextPainter(
         locale: Localizations.localeOf(context, nullOk: true),
         maxLines: maxLines,

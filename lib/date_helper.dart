@@ -39,33 +39,28 @@ enum DateType {
 }
 
 class DateHelper {
-
   /// 时间戳转化为日期 time 豪秒
-  static DateTime transformDate(int timeStamp){
-
-    if (timeStamp == null || timeStamp == 0){
-      return null;
-    }
+  static DateTime transformDate(int timeStamp) {
+    assert(timeStamp != null);
 
     return DateTime.fromMillisecondsSinceEpoch(timeStamp);
-
   }
 
   /// 日期转化为时间戳 毫秒
-  static int transformTimeStamp(DateTime time){
+  static int transformTimeStamp(DateTime date) {
+    assert(date != null);
 
-    if(time == null) {
-      return null;
-    }
-
-    return time.microsecondsSinceEpoch;
-
+    return date.microsecondsSinceEpoch;
   }
 
   ///计算月份的天数
-  static int calculateDays({int year, @required int month}) {
-    if (year == null) {
+  static int calculateDays({int year, int month}) {
+    if (year == null || year == 0) {
       year = DateTime.now().year;
+    }
+
+    if (month == null || month == 0) {
+      month = DateTime.now().month;
     }
 
     if ([1, 3, 5, 7, 8, 10, 12].contains(month)) {
@@ -80,7 +75,8 @@ class DateHelper {
   }
 
   ///日期转成字符串显示
-  static String transformDateString(DateTime date, {DateType type = DateType.ymd_hms_1}) {
+  static String transformDateString(DateTime date,
+      {DateType type = DateType.ymd_hms_1}) {
     if (date == null) {
       date = DateTime.now();
     }
@@ -112,11 +108,8 @@ class DateHelper {
   }
 
   /// 日期转个性化字符串
-  String transformCustomDateString(DateTime time) {
-
-    if (time == null ) {
-      return null;
-    }
+  String transformCustomDateString(DateTime date) {
+    assert(date != null);
 
     int minute = 60;
     int hour = minute * 60;
@@ -125,12 +118,12 @@ class DateHelper {
     int month = day * 30;
 
     var nowTime = DateTime.now().millisecondsSinceEpoch / 1000; //到秒
-    var createTime = time.millisecondsSinceEpoch / 1000; //到秒
+    var createTime = date.millisecondsSinceEpoch / 1000; //到秒
     var leftTime = nowTime - createTime;
 
     String duration;
     if (leftTime / month > 6) {
-      duration = transformDateString(time,type: DateType.ymd_hms_1);
+      duration = transformDateString(date, type: DateType.ymd_hms_1);
     } else if (leftTime / month >= 1) {
       duration = (leftTime / month).floor().toString() + '月前';
     } else if (leftTime / week >= 1) {
@@ -146,5 +139,4 @@ class DateHelper {
     }
     return duration;
   }
-
 }
